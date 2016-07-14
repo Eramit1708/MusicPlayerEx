@@ -44,7 +44,7 @@ public class SongAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        // TODO Auto-generated method stub
+
         //map to song layout
         LinearLayout songLay = (LinearLayout)songInf.inflate
                 (R.layout.song, parent, false);

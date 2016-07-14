@@ -13,6 +13,7 @@ import java.util.Comparator;
 import android.net.Uri;
 import android.content.ContentResolver;
 import android.database.Cursor;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -56,7 +57,9 @@ public class Home extends AppCompatActivity implements MediaPlayerControl{
         super.onStart();
         // Bind to LocalService
         if(playIntent==null){
+
             playIntent = new Intent(this, MusicService.class);
+            playIntent.setAction(Constants.ACTION.STARTFOREGROUND_ACTION);
             bindService(playIntent, musicConnection, Context.BIND_AUTO_CREATE);
             startService(playIntent);
         }
@@ -124,7 +127,7 @@ public class Home extends AppCompatActivity implements MediaPlayerControl{
         //menu item selected
         switch (item.getItemId()) {
             case R.id.action_shuffle:
-                //shuffle
+                Log.d("---------", "setShuffle: coming ");
                 musicSrv.setShuffle();
                 break;
             case R.id.action_end:
@@ -211,14 +214,14 @@ public class Home extends AppCompatActivity implements MediaPlayerControl{
     @Override
     public int getDuration() {
         if(musicSrv!=null && musicBound && musicSrv.isPng())
-        return musicSrv.getDur();
+            return musicSrv.getDur();
         else return 0;
     }
 
     @Override
     public int getCurrentPosition() {
         if(musicSrv!=null && musicBound && musicSrv.isPng())
-        return musicSrv.getPosn();
+            return musicSrv.getPosn();
         else return 0;
     }
 
@@ -230,7 +233,7 @@ public class Home extends AppCompatActivity implements MediaPlayerControl{
     @Override
     public boolean isPlaying() {
         if(musicSrv!=null && musicBound)
-        return musicSrv.isPng();
+            return musicSrv.isPng();
         return false;
     }
 
@@ -258,6 +261,7 @@ public class Home extends AppCompatActivity implements MediaPlayerControl{
     public int getAudioSessionId() {
         return 0;
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -270,4 +274,6 @@ public class Home extends AppCompatActivity implements MediaPlayerControl{
         musicSrv=null;
         super.onDestroy();
     }
+
+
 }
